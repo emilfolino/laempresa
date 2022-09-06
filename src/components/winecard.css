@@ -1,0 +1,16 @@
+.card {
+    width: 48%;
+    border: 1px solid #ccc;
+    padding: 1em;
+    margin-bottom: 2em;
+}
+
+.fat {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: black;
+}
+
+.slim {
+    color: #666;
+}

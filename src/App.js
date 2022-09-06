@@ -1,23 +1,34 @@
-import logo from './logo.svg';
 import './App.css';
+import { useState, useEffect } from 'react';
+import winesModel from './models/wines';
+
+import WineList from './components/WineList';
+import WineForm from './components/WineForm';
 
 function App() {
+  const [wines, setWines] = useState([]);
+
+  async function fetchWines() {
+    const allWines = await winesModel.getAllWines();
+
+    setWines(allWines);
+  }
+
+  useEffect(() => {
+    (async () => {
+      await fetchWines();
+    })();
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+      <header className="header">
+        <h1>la empresa</h1>
       </header>
+      <main className="main">
+        <WineList wines={wines} />
+        <WineForm submitFunction={fetchWines} />
+      </main>
     </div>
   );
 }
