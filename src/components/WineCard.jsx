@@ -1,6 +1,6 @@
 import "./winecard.css";
 
-function WineCard({wine, key}) {
+function WineCard({wine}) {
     return (
         <div className="card">
             <p className="fat">{wine.name}</p>
