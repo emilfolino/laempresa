@@ -2,8 +2,12 @@ const winesModel = {
     baseUrl: window.location.href.includes("localhost") ?
         "http://localhost:8976" :
         "https://jsramverk-wines-efostud.azurewebsites.net",
-    getAllWines: async function getAllWines() {
-        const response = await fetch(`${winesModel.baseUrl}/wines`);
+    getAllWines: async function getAllWines(token) {
+        const response = await fetch(`${winesModel.baseUrl}/wines`, {
+            headers: {
+                "x-access-token": token,
+            }
+        });
 
         const wines = await response.json();
 

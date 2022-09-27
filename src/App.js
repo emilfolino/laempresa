@@ -3,9 +3,11 @@ import { useState, useEffect } from 'react';
 import { io } from "socket.io-client";
 
 import winesModel from './models/wines';
+import authModel from './models/auth';
 
 import WineList from './components/WineList';
 import WineForm from './components/WineForm';
+import Login from './components/Login';
 
 let sendToSocket = false;
 
@@ -17,9 +19,10 @@ function App() {
   const [wines, setWines] = useState([]);
   const [socket, setSocket] = useState(null);
   const [amounts, setAmounts] = useState({});
+  const [token, setToken] = useState("");
 
   async function fetchWines() {
-    const allWines = await winesModel.getAllWines();
+    const allWines = await winesModel.getAllWines(token);
 
     const amountsObject = allWines.reduce((acc, wine) => {
       let tmpObject = {};
@@ -36,7 +39,7 @@ function App() {
     (async () => {
       await fetchWines();
     })();
-  }, []);
+}, [token]);
 
   useEffect(() => {
     console.log(sendToSocket);
@@ -90,8 +93,16 @@ function App() {
         <h1>la empresa</h1>
       </header>
       <main className="main">
-        <WineList wines={wines} amounts={amounts} buy={buy} />
-        <WineForm submitFunction={fetchWines} />
+        {token ?
+          <>
+            <WineList wines={wines} amounts={amounts} buy={buy} />
+            <WineForm submitFunction={fetchWines} />
+          </>
+          :
+          <Login setToken={setToken} />
+        }
+
+
       </main>
     </div>
   );
