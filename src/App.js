@@ -3,11 +3,11 @@ import { useState, useEffect } from 'react';
 import { io } from "socket.io-client";
 
 import winesModel from './models/wines';
-import authModel from './models/auth';
 
 import WineList from './components/WineList';
 import WineForm from './components/WineForm';
 import Login from './components/Login';
+import Cart from './components/Cart';
 
 let sendToSocket = false;
 
@@ -20,6 +20,7 @@ function App() {
   const [socket, setSocket] = useState(null);
   const [amounts, setAmounts] = useState({});
   const [token, setToken] = useState("");
+  const [cart, setCart] = useState([]);
 
   async function fetchWines() {
     const allWines = await winesModel.getAllWines(token);
@@ -85,12 +86,15 @@ function App() {
     tmpObject[id] = newAmount;
 
     setAmounts({...amounts, ...tmpObject});
+
+    setCart([...cart, id]);
   }
 
   return (
     <div className="App">
       <header className="header">
         <h1>la empresa</h1>
+        {token ? <Cart cart={cart} /> : null}
       </header>
       <main className="main">
         {token ?
@@ -101,8 +105,6 @@ function App() {
           :
           <Login setToken={setToken} />
         }
-
-
       </main>
     </div>
   );
